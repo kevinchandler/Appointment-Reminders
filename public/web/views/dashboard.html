@@ -27,8 +27,9 @@
 
 	<div ng-controller='ReminderCtrl' class='col-md-6 col-md-offset-1'>
 		<h3 class='lead'>Upcoming Appointments:</h3>
+		<input type='hidden' ng-model='today'>
 		<ul>
-			<li ng-repeat='reminder in reminders' ng-model='reminder'>
+			<li ng-repeat='reminder in reminders'>
 				<span class='lead'>{{reminder.recipient_name}} </span> <br />
 				 Appointment date:  {{reminder.appointment_date}} <br />
 				 Remind date: {{reminder.reminder_date}} <br />

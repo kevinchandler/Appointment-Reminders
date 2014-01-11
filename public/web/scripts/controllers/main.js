@@ -6,7 +6,7 @@ angular.module('remindApp')
 })
  
  .controller('DashboardCtrl', function ($scope) { //once logged in..
-  
+    $scope.today = moment().toString().slice(4, 15).replace(/\s+/g, '/'); //= jan/10/2014)
 })
 
  .controller('CreateReminderCtrl', function ($scope, $http) {
@@ -14,17 +14,11 @@ angular.module('remindApp')
   		success(function(data, status, headers, config) {
   			$scope.recipients = data; //repeats over reach recipient in the view
   		});
-      
-      var date = new Date
-      , reminder_day_year
-      , appointment_day_year
-      , reminder_month
-      , appointment_month;
 
   $scope.createReminder = function() {
     function formatDate() {
-        reminder_day_year = $scope.reminder_date.toString().slice(4, 15).replace(/\s+/g, '/')
-      , appointment_day_year = $scope.appointment_date.toString().slice(4, 15).replace(/\s+/g, '/');
+        reminder_date = $scope.reminder_date.toString().slice(4, 15).replace(/\s+/g, '/')
+      , appointment_date = $scope.appointment_date.toString().slice(4, 15).replace(/\s+/g, '/');
     }
     formatDate();
 
@@ -35,12 +29,11 @@ angular.module('remindApp')
       'username' : 'admin',
       'recipient_name' : $scope.recipient.recipientName,
       'recipient_email' : $scope.recipient.recipientEmail,
-      'appointment_date' : appointment_day_year, //formatted from formatDate() 
-      'reminder_date' : reminder_day_year  //formatted from formatDate()
+      'appointment_date' : appointment_date, //formatted from formatDate() 
+      'reminder_date' : reminder_date  //formatted from formatDate()
      }
 })
 .then(function(response) {
-        alert('successfully saved')
         window.location.reload(true);
         
     }, 
@@ -58,8 +51,8 @@ angular.module('remindApp')
         success(function(reminders, status) {
           $scope.reminders = reminders;
         })
-  }
-  findReminders();
+  } findReminders();
+
     $scope.deleteReminder = function() {
       $http({
       url: 'http://localhost:3000/api/re-mind/deletereminder/' + this.reminder._id,

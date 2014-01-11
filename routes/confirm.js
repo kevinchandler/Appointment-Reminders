@@ -30,7 +30,9 @@ exports.index = function(req, res) {
   		if (reply == null) {
   			res.redirect('/');
   		} else {
+  		
   		var query = { confirmed: 'false', _id: reply._id }; //query param for false flag in the db 
+  		
   		if (reply.confirmed == true) {
 			return res.send('you\'ve already confirmed your appointment');	
         } 
