@@ -23,16 +23,18 @@
 
 	  	<!-- </form> -->
 			</form>
-	</div>
+	</div> 
 
-	<div ng-controller='ReminderCtrl' class='col-md-4 col-md-offset-4'>
+	<div ng-controller='ReminderCtrl' class='col-md-6 col-md-offset-1'>
 		<h3 class='lead'>Upcoming Appointments:</h3>
 		<ul>
-			<li ng-repeat='reminder in reminders'>
-				{{reminder.recipient_name}} - {{reminder.appointment_date}} <br />
+			<li ng-repeat='reminder in reminders' ng-model='reminder'>
+				<span class='lead'>{{reminder.recipient_name}} </span> <br />
+				 Appointment date:  {{reminder.appointment_date}} <br />
 				 Remind date: {{reminder.reminder_date}} <br />
 				 Reminder sent? {{reminder.sent}} <br />
-				 Confirmed? {{reminder.confirmed}}
+				 Confirmed? {{reminder.confirmed}} <br />
+				 <a style='cursor: pointer;' ng-click='deleteReminder()' >Delete this reminder</a>
 				 <hr>
 			 </li>
 		</ul>
