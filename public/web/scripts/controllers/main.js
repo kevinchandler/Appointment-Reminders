@@ -41,6 +41,7 @@ angular.module('remindApp')
 })
 .then(function(response) {
         alert('successfully saved')
+        window.location.reload(true);
         
     }, 
     function(response) { // optional
@@ -50,12 +51,23 @@ angular.module('remindApp')
 })
 
 .controller('ReminderCtrl', function ($scope, $http)  {
+  function findReminders(){
     $http({
       url: 'http://localhost:3000/api/re-mind/findreminders',
       method: 'GET'}).
         success(function(reminders, status) {
           $scope.reminders = reminders;
         })
+  }
+  findReminders();
+    $scope.deleteReminder = function() {
+      $http({
+      url: 'http://localhost:3000/api/re-mind/deletereminder/' + this.reminder._id,
+      method: 'DELETE'}).
+        success(function(reminders, status) {
+          findReminders();
+      })
+      }
     })
 
 .controller('CreateTemplateCtrl', function ($scope) {

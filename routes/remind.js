@@ -173,16 +173,34 @@ exports.findreminders = function(req, res) {
 	})
 };
 
+exports.deletereminder = function(req, res) {
+
+	var db = mongoose.createConnection(uristring);
+
+	db.once('open', function(){
+
+	var findReminderSchema = mongoose.Schema({
+		username: String,
+		recipient_email: String,
+		reminder_date: String,
+		appointment_date: String,
+		confirmed: Boolean,
+		sent: Boolean
+	});
+
+	var Reminder = db.model('Reminder', findReminderSchema);
 
 
-
-
-
-
-
-
-
-
-
-
-
+  return Reminder.findById(req.params.id, function (err, reminder) {
+    return reminder.remove(function (err) {
+      if (!err) {
+        console.log(reminder + " removed");
+        return res.send('');
+      } else {
+        console.log(err);
+      }
+    });
+  });
+		
+})
+}

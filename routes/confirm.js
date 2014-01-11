@@ -9,7 +9,6 @@ var dotenv = require('dotenv')
 dotenv.load();
 
 exports.index = function(req, res) {
-
 	var reminderId = req.params.id
 	,	db = mongoose.createConnection(uristring);
 
@@ -28,6 +27,9 @@ exports.index = function(req, res) {
 
 
   Reminder.findOne({'_id' : reminderId}, function(err, reply){  
+  		if (reply == null) {
+  			res.redirect('/');
+  		} else {
   		var query = { confirmed: 'false', _id: reply._id }; //query param for false flag in the db 
   		if (reply.confirmed == true) {
 			return res.send('you\'ve already confirmed your appointment');	
@@ -37,6 +39,7 @@ exports.index = function(req, res) {
         		console.log(res.appointment_date)
         	})
         }
+    }
 		mongoose.connection.close();
 		res.send('Thanks, you\'re confirmed!');
 	})
