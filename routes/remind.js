@@ -112,9 +112,7 @@ exports.findrecipients = function(req, res) {
 exports.findtemplate = function(req, res) {
 	var db = mongoose.createConnection(uristring);
 	db.once('open', function(){
-		console.log('yay db open')
-		//have to create schema in order to find entries in database.. 
-		//Find out how to export it in the createTemplateSchema.js
+
 		var templateSchema = mongoose.Schema({
 			username: String,
 			templateName: String,
@@ -134,7 +132,6 @@ exports.findtemplate = function(req, res) {
 
 exports.findreminders = function(req, res) {
 	var now = moment()._d.toString().slice(4, 15).replace(/\s+/g, '/'); //jan/05/2014
-	console.log('now is: ' + now);
 	var db = mongoose.createConnection(uristring);
 
 	db.once('open', function(){
@@ -163,15 +160,13 @@ exports.findreminders = function(req, res) {
 					  text: 'Please confirm your appointment: ' + 'http://localhost:3000' + '/confirm/'+reminder[i]._id 
 					}, function(success, message) {
 					  if (!success) {
-					    console.log(message);
+					  	return 500
 					  }
 					});
 					var query = { sent: 'false', reminder_date: reminder[i].reminder_date }; //query param for false flag in the db 
 					Reminder.update(query, { sent: 'true' }, function(err, res) { //updates false flag to true
                     })
 				}
-			console.log(reminder[i].reminder_date);
-
 			}
 			mongoose.connection.close();
 		})

@@ -26,11 +26,17 @@ exports.index = function(req, res) {
 
 	var Reminder = db.model('Reminder', findReminderSchema);
 
+
   Reminder.findOne({'_id' : reminderId}, function(err, reply){  
-  		console.dir(reply);
-  		var query = { confirmed: 'false'}; //query param for false flag in the db 
-					Reminder.update(query, { confirmed: 'true' }, function(err, res) { //updates false flag to true
-                    })
+  		var query = { confirmed: 'false', _id: reply._id }; //query param for false flag in the db 
+  		if (reply.confirmed == true) {
+			return res.send('you\'ve already confirmed your appointment');	
+        } 
+        else {
+        	Reminder.update(query, { confirmed: 'true' }, function(err, res) { //updates false flag to true
+        		console.log(res.appointment_date)
+        	})
+        }
 		mongoose.connection.close();
 		res.send('Thanks, you\'re confirmed!');
 	})
