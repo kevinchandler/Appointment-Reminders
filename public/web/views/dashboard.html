@@ -33,7 +33,7 @@
 				<span class='lead'>{{reminder.recipient_name}} </span> <br />
 				 Appointment date:  {{reminder.appointment_date}} <br />
 				 Remind date: {{reminder.reminder_date}} <br />
-				 Reminder sent? {{reminder.sent}} <br />
+				 Reminder sent? {{reminder.sent}} <a ng-click='sendReminder();'>Send reminder now</a><br />
 				 Confirmed? {{reminder.confirmed}} <br />
 				 <a style='cursor: pointer;' ng-click='deleteReminder()' >Delete this reminder</a>
 				 <hr>

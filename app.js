@@ -81,6 +81,8 @@ app.get('/api/re-mind/findreminders', remind.findreminders);
 
 app.delete('/api/re-mind/deletereminder/:id', remind.deletereminder);
 
+app.post('/api/re-mind/sendreminder/:id', remind.sendreminder); 
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

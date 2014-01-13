@@ -34,7 +34,7 @@ angular.module('remindApp')
      }
 })
 .then(function(response) {
-        window.location.reload(true);
+        findReminders();
         
     }, 
     function(response) { // optional
@@ -44,7 +44,7 @@ angular.module('remindApp')
 })
 
 .controller('ReminderCtrl', function ($scope, $http)  {
-  function findReminders(){
+  function findReminders(){ //reload reminders
     $http({
       url: 'http://localhost:3000/api/re-mind/findreminders',
       method: 'GET'}).
@@ -52,6 +52,21 @@ angular.module('remindApp')
           $scope.reminders = reminders;
         })
   } findReminders();
+
+
+    $scope.sendReminder = function() {
+      $http({
+        url: 'http://localhost:3000/api/re-mind/sendreminder/' + this.reminder._id,
+        method: 'POST',
+        data: { 
+        'recipient_email' : this.reminder.recipient_email,
+        '_id'  : this.reminder._id
+     }}).
+      
+      success(function(reminders, status) {
+      })
+      findReminders();
+    }
 
     $scope.deleteReminder = function() {
       $http({
@@ -61,7 +76,7 @@ angular.module('remindApp')
           findReminders();
       })
       }
-    })
+})
 
 .controller('CreateTemplateCtrl', function ($scope) {
 	

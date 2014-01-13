@@ -7,6 +7,51 @@ var dotenv = require('dotenv')
 var moment = require('moment');
 dotenv.load();
 
+	function sendReminder(recipientEmail, reminderId) {
+		console.log(reminderId);
+		var sendgrid  = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
+		sendgrid.send({
+		  to: recipientEmail,
+		  from: 'reminder@imkev.in',
+		  subject: 'Your reminder',
+		  text: 'Please confirm your appointment: ' + 'http://localhost:3000' + '/confirm/'+reminderId
+		}, function(success, message) {
+		  if (!success) {
+		  	return 500
+		  }
+		})
+		console.log('message success');
+		markSent(reminderId);
+	}
+
+
+	function markSent(reminderId) {
+		console.log('marksent reminderId' + reminderId);
+		var db = mongoose.createConnection(uristring);
+		db.once('open', function(){
+
+			var findReminderSchema = mongoose.Schema({
+				username: String,
+				recipient_email: String,
+				reminder_date: String,
+				appointment_date: String,
+				confirmed: Boolean,
+				sent: Boolean
+			});
+
+			var Reminder = db.model('Reminder', findReminderSchema);
+			  Reminder.findById(reminderId, function (err, reminder) {
+			  	var query = { _id: reminderId };
+				Reminder.update(query, { sent: 'true' }, function(err, res) {  //updates false flag to true
+				console.log(res);
+		       })
+			})
+		})
+		mongoose.connection.close();
+	}
+
+
+
 //---------------------------------------//
 
 exports.createtemplate = function(req, res) {
@@ -147,9 +192,8 @@ exports.findreminders = function(req, res) {
 
 		var Reminder = db.model('Reminder', findReminderSchema);
 
-
 		Reminder.find( function(err, reminder) {
-			res.json(reminder);
+			res.json(reminder); //the view for the reminders on the dashboard
 			for (var i=0; i< reminder.length; i++) {
 				if ((reminder[i].reminder_date == now) && (reminder[i].sent == false)) { // && (reminder[i].sent == 'false')) { //if reminder date and not sent, send. 
 					var sendgrid  = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
@@ -189,18 +233,20 @@ exports.deletereminder = function(req, res) {
 	});
 
 	var Reminder = db.model('Reminder', findReminderSchema);
-
-
   return Reminder.findById(req.params.id, function (err, reminder) {
     return reminder.remove(function (err) {
       if (!err) {
-        console.log(reminder + " removed");
+        console.log(reminder + " reminder removed");
         return res.send('');
       } else {
         console.log(err);
       }
     });
-  });
-		
+  });		
 })
+}
+
+
+exports.sendreminder = function(req, res) {
+	sendReminder(req.body.recipient_email, req.body._id);
 }
