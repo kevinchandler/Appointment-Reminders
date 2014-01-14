@@ -8,47 +8,51 @@ var moment = require('moment');
 dotenv.load();
 
 	function sendReminder(reminder) {
-		console.log(reminder);
+		var id = reminder._id
+		,	recipient_email = reminder.recipient_email
+		,	appointment_date = reminder.appointment_date;
+
 		var sendgrid  = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
 		sendgrid.send({
-		  to: reminder.recipient_email,
+		  to: recipient_email,
 		  from: 'reminder@imkev.in',
 		  subject: 'Your reminder',
-		  text: 'Please confirm your appointment for: ' + reminder.appointment_date + '\n http://localhost:3000' + '/confirm/'+reminder._id
+		  text: 'Please confirm your appointment for: ' + appointment_date + '\n http://localhost:3000' + '/confirm/'+id
 		}, function(success, message) {
 		  if (!success) {
 		  	return 500
 		  }
 		})
 		console.log('message success');
-		markSent(reminder._id);
-	}
+		markSent(reminder);
+	};
 
 
-	function markSent(reminderId) {
-		console.log('marksent reminderId' + reminderId);
-		var db = mongoose.createConnection(uristring);
-		db.once('open', function(){
 
-			var findReminderSchema = mongoose.Schema({
-				username: String,
-				recipient_email: String,
-				reminder_date: String,
-				appointment_date: String,
-				confirmed: Boolean,
-				sent: Boolean
-			});
+function markSent(reminder) {
+   console.log('marksent reminderId' + reminder._id);
+   var db = mongoose.createConnection(uristring);
+   db.once('open', function(){
 
-			var Reminder = db.model('Reminder', findReminderSchema);
-			  Reminder.findById(reminderId, function (err, reminder) {
-			  	var query = { _id: reminderId };
-				Reminder.update(query, { sent: 'true' }, function(err, res) {  //updates false flag to true
-				console.log(res);
-		       })
-			})
-		})
-		mongoose.connection.close();
-	}
+     var findReminderSchema = mongoose.Schema({
+       username: String,
+       recipient_email: String,
+       reminder_date: String,
+       appointment_date: String,
+       confirmed: Boolean,
+       sent: Boolean
+     });
+
+     var Reminder = db.model('Reminder', findReminderSchema);
+       Reminder.findById(reminder._id, function (err, reminder) {
+         var query = { _id: reminder._id };
+       Reminder.update(query, { sent: 'true' }, function(err, res) {  //updates false flag to true
+       console.log(res);
+          })
+     })
+   })
+   mongoose.connection.close();
+ }
 
 
 

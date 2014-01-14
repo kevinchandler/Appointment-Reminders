@@ -9,6 +9,8 @@
   <h3 class="text-muted">Remind</h3>
 </div>
 
+
+
 	<div ng-controller='CreateReminderCtrl' class='col-md-4'>
 		<form name='createReminderForm' ng-submit='createReminder()'>
 		    <h3 class='lead'>Create a reminder:</h3> 
@@ -20,15 +22,13 @@
 		    <input ui-date ng-model='reminder_date' name='reminder_date' placeholder='Date to start reminding' /> <br />
 		    <br />
 		    <button type='submit' class="btn btn-md btn-success">Re-mind</button>
-
-	  	<!-- </form> -->
-			</form>
+		</form>
 	</div> 
 
-	<div ng-controller='ReminderCtrl' class='col-md-7 col-md-offset-1'>
+	<div ng-controller='ReminderCtrl' class='col-md-6 col-md-offset-2'>
 		<h3 class='lead'>Upcoming Appointments:</h3>
 		<input type='hidden' ng-model='today'>
-		<ul>
+		<ul class='upcomingReminders'>
 			<li ng-repeat='reminder in reminders'>
 				<span class='lead'>{{reminder.recipient_name}} </span> <br />
 				 Appointment date:  {{reminder.appointment_date}} <br />
@@ -38,6 +38,8 @@
 				 <a ng-click='deleteReminder()' >Delete this reminder</a>
 			 </li>
 		</ul>
-
 	</div>
+
+
+
 </div>

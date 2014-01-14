@@ -43,7 +43,7 @@ angular.module('remindApp')
 })
 
 .controller('ReminderCtrl', function ($scope, $http)  {
-  function findReminders(){ //reload reminders
+    function findReminders(){ //reload reminders
     $http({
       url: 'http://localhost:3000/api/re-mind/findreminders',
       method: 'GET'}).
