@@ -105,10 +105,13 @@ textarea[name='message'] {
 }
 
 
-
+a {
+  cursor: pointer;
+}
 
 
 input {
   width: 15em;
   margin-top: .2em;
 }
+

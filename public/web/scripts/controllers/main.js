@@ -34,8 +34,7 @@ angular.module('remindApp')
      }
 })
 .then(function(response) {
-        findReminders();
-        
+        window.location.reload();        
     }, 
     function(response) { // optional
         alert(response)
@@ -59,8 +58,7 @@ angular.module('remindApp')
         url: 'http://localhost:3000/api/re-mind/sendreminder/' + this.reminder._id,
         method: 'POST',
         data: { 
-        'recipient_email' : this.reminder.recipient_email,
-        '_id'  : this.reminder._id
+        'reminder' : this.reminder
      }}).
       
       success(function(reminders, status) {

@@ -7,21 +7,21 @@ var dotenv = require('dotenv')
 var moment = require('moment');
 dotenv.load();
 
-	function sendReminder(recipientEmail, reminderId) {
-		console.log(reminderId);
+	function sendReminder(reminder) {
+		console.log(reminder);
 		var sendgrid  = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
 		sendgrid.send({
-		  to: recipientEmail,
+		  to: reminder.recipient_email,
 		  from: 'reminder@imkev.in',
 		  subject: 'Your reminder',
-		  text: 'Please confirm your appointment: ' + 'http://localhost:3000' + '/confirm/'+reminderId
+		  text: 'Please confirm your appointment for: ' + reminder.appointment_date + '\n http://localhost:3000' + '/confirm/'+reminder._id
 		}, function(success, message) {
 		  if (!success) {
 		  	return 500
 		  }
 		})
 		console.log('message success');
-		markSent(reminderId);
+		markSent(reminder._id);
 	}
 
 
@@ -201,7 +201,7 @@ exports.findreminders = function(req, res) {
 					  to: reminder[i].recipient_email,
 					  from: 'reminder@imkev.in',
 					  subject: 'Your reminder',
-					  text: 'Please confirm your appointment: ' + 'http://localhost:3000' + '/confirm/'+reminder[i]._id 
+					  text: 'Please confirm your appointment for: ' + reminder[i].appointment_date + '\n http://localhost:3000' + '/confirm/'+reminder[i]._id
 					}, function(success, message) {
 					  if (!success) {
 					  	return 500
@@ -248,5 +248,5 @@ exports.deletereminder = function(req, res) {
 
 
 exports.sendreminder = function(req, res) {
-	sendReminder(req.body.recipient_email, req.body._id);
+	sendReminder(req.body.reminder);
 }
