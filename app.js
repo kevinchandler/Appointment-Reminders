@@ -20,7 +20,8 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({secret: 'fdsfdsfdsfsfsdkmfkwemkmmmmmmkmkMKMK$KMKMRMMKMKXMKMXKMXKX'}));
 app.use(express.methodOverride());
-
+app.use(express.static(path.join(__dirname, 'public/web')));
+app.use(app.router);
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -41,7 +42,9 @@ function authenticate(req, res, next) {
 }
 
 app.get('/', authenticate);
-
+app.get('/views/addrecipient.html', function(req, res) {
+  res.redirect('/#/views/addrecipient.html');
+})
 
 app.post('/login/success', function(req, res) {
   req.session.user = req.body.email;
@@ -52,12 +55,6 @@ app.get('/logout', function(req, res) {
   req.session.user = null;
   res.redirect('/login');
 });
-
-
-
-app.use(express.static(path.join(__dirname, 'public/web')));
-app.use(app.router);
-
 
 app.get('/api/remind', function(req, res) {
   res.redirect('#/')
