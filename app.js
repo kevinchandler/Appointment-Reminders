@@ -10,7 +10,6 @@ var app = express();
 // all environments
 
 app.set('port', process.env.PORT || 3000);
-app.use(express.static(path.join(__dirname, 'public/web')));
 app.set('views', path.join(__dirname, '/views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -21,7 +20,7 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({secret: 'fdsfdsfdsfsfsdkmfkwemkmmmmmmkmkMKMK$KMKMRMMKMKXMKMXKMXKX'}));
 app.use(express.methodOverride());
-app.use(app.router);
+
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -53,6 +52,12 @@ app.get('/logout', function(req, res) {
   req.session.user = null;
   res.redirect('/login');
 });
+
+
+
+app.use(express.static(path.join(__dirname, 'public/web')));
+app.use(app.router);
+
 
 app.get('/api/remind', function(req, res) {
   res.redirect('#/')
