@@ -200,17 +200,7 @@ exports.findreminders = function(req, res) {
 			res.json(reminder); //the view for the reminders on the dashboard
 			for (var i=0; i< reminder.length; i++) {
 				if ((reminder[i].reminder_date == now) && (reminder[i].sent == false)) { // && (reminder[i].sent == 'false')) { //if reminder date and not sent, send. 
-					var sendgrid  = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
-					sendgrid.send({
-					  to: reminder[i].recipient_email,
-					  from: 'reminder@imkev.in',
-					  subject: 'Your reminder',
-					  text: 'Please confirm your appointment for: ' + reminder[i].appointment_date + '\n http://localhost:3000' + '/confirm/'+reminder[i]._id
-					}, function(success, message) {
-					  if (!success) {
-					  	return 500
-					  }
-					});
+					sendReminder(reminder[i]);
 					var query = { sent: 'false', reminder_date: reminder[i].reminder_date }; //query param for false flag in the db 
 					Reminder.update(query, { sent: 'true' }, function(err, res) { //updates false flag to true
                     })
