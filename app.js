@@ -50,7 +50,7 @@ app.post('/login/success', function(req, res) {
 
 app.get('/logout', function(req, res) {
   req.session.user = null;
-  res.redirect('/login/');
+  res.redirect('/login');
 });
 
 app.get('/api/remind', function(req, res) {

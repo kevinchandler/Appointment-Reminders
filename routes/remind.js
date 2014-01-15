@@ -16,9 +16,9 @@ dotenv.load();
 		var sendgrid  = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
 		sendgrid.send({
 		  to: recipient_email,
-		  from: 'reminder@imkev.in',
-		  subject: 'Your reminder',
-		  html: 'Hello! Just a friendly reminder about your appointment on: ' + appointment_date + ' at ' + appointment_time + " \n <a href='http://localhost:3000" + '/confirm/'+id + "'>Confirm</a> \n <a href='http://localhost:3000" + '/cancel/'+id + "'>Cancel</a> \n"
+		  from: process.env.FROM_EMAIL,
+		  subject: 'Your appointment reminder from ' + process.env.BUSINESS_NAME,
+		  html: 'Hello! Just a friendly reminder about your appointment on: ' + appointment_date + ' at ' + appointment_time + ' <br /><br /> <a href="' + process.env.BASE_URL + '/confirm/'+id + "'>Confirm appointment</a> <br /> <a href='http://localhost:3000" + '/cancel/'+id + "'>Cancel appoitment</a> <br /> <br /> If you've already confirmed and something comes up, you can always come back to cancel or confirm your appointment; just click on the relevant link above. <br /> \n <br /> " + process.env.BUSINESS_NAME + "<br />" + process.env.BUSINESS_PHONE + '<br />' + process.env.BUSINESS_ADDRESS + "<br />" + "<br />" + "<p></p><br />"
 		}, function(success, message) {
 		  if (!success) {
 		  	return 500
@@ -48,7 +48,6 @@ function markSent(reminder) {
        Reminder.findById(reminder._id, function (err, reminder) {
          var query = { username: reminder.username, _id: reminder._id };
        Reminder.update(query, { sent: 'true' }, function(err, res) {  //updates false flag to true
-       console.log(res);
           })
      })
    })

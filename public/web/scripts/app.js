@@ -18,8 +18,7 @@ angular.module('remindApp', [
         controller: 'MainCtrl'
       })
        .when('/logout', {
-        templateUrl: 'views/logout.html',
-        controller: 'LogOutCtrl'
+          redirectTo: '/'
       })
        .when('/dashboard', {
         templateUrl: 'views/dashboard.html',
