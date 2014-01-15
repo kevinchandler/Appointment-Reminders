@@ -46,7 +46,7 @@ app.get('/', authenticate);
 
 app.post('/login/success', function(req, res) {
   req.session.user = req.body.email;
-  res.redirect('/#/');
+  res.redirect('/#/dashboard');
 });
 
 app.get('/logout', function(req, res) {
