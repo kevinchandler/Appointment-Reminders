@@ -29,8 +29,8 @@ angular.module('remindApp', [
         templateUrl: 'views/createtemplate.html',
         controller: 'CreateTemplateCtrl'
       })
-      .when('/dashboard/add-recipients', {
-        templateUrl: 'views/addrecipients.html',
+      .when('/dashboard/add-recipient', {
+        templateUrl: 'views/addrecipient.html',
         controller: 'CreateTemplateCtrl'
       })
       .otherwise({

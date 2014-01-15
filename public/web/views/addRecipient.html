@@ -1,0 +1,25 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li><a ng-href="#/dashboard">Dashboard</a></li>
+    <!-- <li><a ng-href="#/dashboard/create-template">Create Template</a></li> -->
+    <li class='active'><a ng-href="#/dashboard/add-recipient">Add Recipient</a></li>
+    <li><a ng-href="#/logout">Log Out</a></li>
+  </ul>
+  <h3 class="text-muted">Remind</h3>
+
+
+<div ng-controller='AddRecipientCtrl'>
+ <form action='/api/re-mind/addrecipients' method='post' class='col-md-12'>
+    <h3 class='lead'>Add someone:</h3>
+    
+    <input type='text' name='recipientName' placeholder='Name' required /> <br />
+    
+    <input type='text' name='recipientEmail' placeholder='Email addresses' required /> <br />
+
+    <input type='text' name='Phone' placeholder='Phone number' required /> <br />
+    <br />
+    <button class="btn btn-md btn-success">Save</button>
+  </form>
+
+
+</div>

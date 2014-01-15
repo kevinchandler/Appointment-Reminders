@@ -42,11 +42,6 @@ function authenticate(req, res, next) {
 
 // app.get('/', authenticate);
 
-app.post('/api/re-mind/createtemplate', remind.createtemplate);
-app.post('/api/re-mind/createreminder', remind.createreminder);
-app.post('/api/re-mind/addrecipients', remind.addrecipients);
-
-app.get('/login', routes.login);
 
 app.post('/login/success', function(req, res) {
   req.session.user = req.body.email;
@@ -58,22 +53,23 @@ app.get('/logout', function(req, res) {
   res.redirect('/login/');
 });
 
-
-
-
-
-
-
 app.get('/api/remind', function(req, res) {
-	res.redirect('#/')
+  res.redirect('#/')
 });
+
+// app.post('/api/re-mind/createtemplate', remind.createtemplate);
+app.post('/api/re-mind/createreminder', remind.createreminder);
+app.post('/api/re-mind/addrecipients', remind.addrecipients);
+
+app.get('/login', routes.login);
+
 
 // app.get('/api/sendreminder:id', remind.sendreminder);
 
-//to implement this view later for the recipient's confirmation
 app.get('/confirm/:id', confirm.index);
+app.get('/cancel/:id', confirm.cancel);
 
-app.get('/api/re-mind/findtemplate', remind.findtemplate);
+// app.get('/api/re-mind/findtemplate', remind.findtemplate);
 
 app.get('/api/re-mind/findrecipients', remind.findrecipients);
 

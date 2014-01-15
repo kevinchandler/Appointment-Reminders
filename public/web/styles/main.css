@@ -115,7 +115,14 @@ input {
   margin-top: .2em;
 }
 
-/*
+.upcomingReminders {
+  list-style-type: none;
+}
 .upcomingReminders li {
-  display: inline-block;
-}*/
+  margin-top: 1em;
+  line-height: 1.25em;
+}
+span.right {
+  position: relative;
+  right: -40%;
+}

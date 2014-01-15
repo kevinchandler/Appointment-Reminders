@@ -29,7 +29,8 @@ angular.module('remindApp')
       'username' : 'admin',
       'recipient_name' : $scope.recipient.recipientName,
       'recipient_email' : $scope.recipient.recipientEmail,
-      'appointment_date' : appointment_date, //formatted from formatDate() 
+      'appointment_date' : appointment_date, //formatted from formatDate()
+      'appointment_time' : $scope.appointment_time,
       'reminder_date' : reminder_date  //formatted from formatDate()
      }
 })

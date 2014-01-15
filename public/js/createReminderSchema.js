@@ -12,7 +12,9 @@ var createReminderSchema = new Schema({
 	recipient_email: String,
 	reminder_date: String,
 	appointment_date: String,
+	appointment_time: String,
 	confirmed: Boolean,
+	cancelled: Boolean,
 	sent: Boolean
 });
 

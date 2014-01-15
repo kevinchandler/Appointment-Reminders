@@ -10,14 +10,15 @@ dotenv.load();
 	function sendReminder(reminder) {
 		var id = reminder._id
 		,	recipient_email = reminder.recipient_email
-		,	appointment_date = reminder.appointment_date;
+		,	appointment_date = reminder.appointment_date
+		,	appointment_time = reminder.appointment_time;
 
 		var sendgrid  = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
 		sendgrid.send({
 		  to: recipient_email,
 		  from: 'reminder@imkev.in',
 		  subject: 'Your reminder',
-		  text: 'Please confirm your appointment for: ' + appointment_date + '\n http://localhost:3000' + '/confirm/'+id
+		  html: 'Hello! Just a friendly reminder about your appointment on: ' + appointment_date + ' at ' + appointment_time + " \n <a href='http://localhost:3000" + '/confirm/'+id + "'>Confirm</a> \n <a href='http://localhost:3000" + '/cancel/'+id + "'>Cancel</a> \n"
 		}, function(success, message) {
 		  if (!success) {
 		  	return 500
@@ -58,29 +59,29 @@ function markSent(reminder) {
 
 //---------------------------------------//
 
-exports.createtemplate = function(req, res) {
+// exports.createtemplate = function(req, res) {
 
-	var Template = require('../public/js/createTemplateSchema.js')
-	, templateName = req.body.templatename
-	, username = req.body.username
-	, subject = req.body.subject
-	, message = req.body.message;
+// 	var Template = require('../public/js/createTemplateSchema.js')
+// 	, templateName = req.body.templatename
+// 	, username = req.body.username
+// 	, subject = req.body.subject
+// 	, message = req.body.message;
 
-	mongoose.connect(uristring);
+// 	mongoose.connect(uristring);
 
-	var userTemplate = new Template({
-	  username: username,
-	  templateName: templateName,
-	  subject: subject,
-	  message: message
-	})
+// 	var userTemplate = new Template({
+// 	  username: username,
+// 	  templateName: templateName,
+// 	  subject: subject,
+// 	  message: message
+// 	})
 
-	userTemplate.save(function(err) {
-		if(err) console.log(err);
-			mongoose.connection.close();
-		res.redirect('#/dashboard/remind');
-	})
-}
+// 	userTemplate.save(function(err) {
+// 		if(err) console.log(err);
+// 			mongoose.connection.close();
+// 		res.redirect('#/dashboard/remind');
+// 	})
+// }
 
 
 exports.createreminder = function(req, res) {
@@ -94,7 +95,9 @@ exports.createreminder = function(req, res) {
 		recipient_email: req.body.recipient_email,
 		reminder_date: req.body.reminder_date,
 		appointment_date: req.body.appointment_date,
+		appointment_time: req.body.appointment_time,
 		confirmed: 'false',
+		cancelled: 'false',
 		sent: 'false'
 	})
 
@@ -158,24 +161,24 @@ exports.findrecipients = function(req, res) {
 
 //---------------------------------------//
 
-exports.findtemplate = function(req, res) {
-	var db = mongoose.createConnection(uristring);
-	db.once('open', function(){
+// exports.findtemplate = function(req, res) {
+// 	var db = mongoose.createConnection(uristring);
+// 	db.once('open', function(){
 
-		var templateSchema = mongoose.Schema({
-			username: String,
-			templateName: String,
-			subject: String,
-			message: String
-		}); 
+// 		var templateSchema = mongoose.Schema({
+// 			username: String,
+// 			templateName: String,
+// 			subject: String,
+// 			message: String
+// 		}); 
 
-		var Template = db.model('Template', templateSchema);
-		Template.find({message: 'hhh'}, function(err, template){	
-		 	res.send(template);
-		 	mongoose.connection.close();
-		})
-	})
-};
+// 		var Template = db.model('Template', templateSchema);
+// 		Template.find({message: ''}, function(err, template){	
+// 		 	res.json(template);
+// 		 	mongoose.connection.close();
+// 		})
+// 	})
+// };
 
 //---------------------------------------//
 
@@ -191,6 +194,7 @@ exports.findreminders = function(req, res) {
 		reminder_date: String,
 		appointment_date: String,
 		confirmed: Boolean,
+		cancelled: Boolean,
 		sent: Boolean
 	});
 
@@ -223,6 +227,7 @@ exports.deletereminder = function(req, res) {
 		reminder_date: String,
 		appointment_date: String,
 		confirmed: Boolean,
+		cancelled: Boolean,
 		sent: Boolean
 	});
 

@@ -20,30 +20,67 @@ exports.index = function(req, res) {
 		reminder_date: String,
 		appointment_date: String,
 		confirmed: Boolean,
+		cancelled: Boolean,
 		sent: Boolean
 	});
 
 	var Reminder = db.model('Reminder', findReminderSchema);
 
-
-  Reminder.findOne({'_id' : reminderId}, function(err, reply){  
-  		if (reply == null) {
+  Reminder.findOne({'_id' : reminderId}, function(err, reminder){  
+  		if (reminder == null) {
   			res.redirect('/');
   		} else {
   		
-  		var query = { confirmed: 'false', _id: reply._id }; //query param for false flag in the db 
+  		var query = {_id: reminder._id }; //query param for false flag in the db 
   		
-  		if (reply.confirmed == true) {
+  		if (reminder.confirmed == true) {
 			return res.send('you\'ve already confirmed your appointment');	
         } 
         else {
-        	Reminder.update(query, { confirmed: 'true' }, function(err, res) { //updates false flag to true
-        		console.log(res.appointment_date)
+        	Reminder.update(query, { confirmed: 'true', cancelled: 'false' }, function(err, res) { //updates false flag to true
+
         	})
         }
     }
 		mongoose.connection.close();
 		res.send('Thanks, you\'re confirmed!');
+	})
+})
+}
+
+
+
+
+exports.cancel = function(req, res) {
+	var reminderId = req.params.id
+	,	db = mongoose.createConnection(uristring);
+
+	db.once('open', function(){
+
+	var findReminderSchema = mongoose.Schema({
+		username: String,
+		recipient_email: String,
+		reminder_date: String,
+		appointment_date: String,
+		confirmed: Boolean,
+		cancelled: Boolean,
+		sent: Boolean
+	});
+
+	var Reminder = db.model('Reminder', findReminderSchema);
+	
+  Reminder.findOne({'_id' : reminderId}, function(err, reminder){  
+  		if (reminder == null) {
+  			res.redirect('/');
+  		} else {
+  		
+  			var query = { _id: reminder._id }; //query param for false flag in the db 
+  		
+        	Reminder.update(query, { cancelled: 'true', confirmed: 'false' }, function(err, res) { //updates false flag to true
+        	})
+    }
+		mongoose.connection.close();
+		res.end('You have successfully cancelled your appointment');
 	})
 })
 }
