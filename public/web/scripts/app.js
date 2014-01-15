@@ -21,15 +21,15 @@ angular.module('remindApp', [
           redirectTo: '/'
       })
        .when('/dashboard', {
-        templateUrl: 'views/dashboard.html',
+        templateUrl: '../views/dashboard.html',
         controller: 'DashboardCtrl'
       })
       .when('/dashboard/create-template', {
-        templateUrl: 'views/createtemplate.html',
+        templateUrl: '../views/createtemplate.html',
         controller: 'CreateTemplateCtrl'
       })
       .when('/dashboard/add-recipient', {
-        templateUrl: 'views/addrecipient.html',
+        templateUrl: '../views/addrecipient.html',
         controller: 'CreateTemplateCtrl'
       })
       .otherwise({
