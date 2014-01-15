@@ -40,7 +40,7 @@ function authenticate(req, res, next) {
   }
 }
 
-// app.get('/', authenticate);
+app.get('/', authenticate);
 
 
 app.post('/login/success', function(req, res) {

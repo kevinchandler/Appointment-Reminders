@@ -26,7 +26,6 @@ angular.module('remindApp')
     url: 'http://localhost:3000/api/re-mind/createreminder',
     method: "POST",
     data: { 
-      'username' : 'admin',
       'recipient_name' : $scope.recipient.recipientName,
       'recipient_email' : $scope.recipient.recipientEmail,
       'appointment_date' : appointment_date, //formatted from formatDate()

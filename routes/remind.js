@@ -46,7 +46,7 @@ function markSent(reminder) {
 
      var Reminder = db.model('Reminder', findReminderSchema);
        Reminder.findById(reminder._id, function (err, reminder) {
-         var query = { _id: reminder._id };
+         var query = { username: reminder.username, _id: reminder._id };
        Reminder.update(query, { sent: 'true' }, function(err, res) {  //updates false flag to true
        console.log(res);
           })
@@ -90,7 +90,7 @@ exports.createreminder = function(req, res) {
 	mongoose.connect(uristring);
 
 	var reminder = new Reminder({
-		username: req.body.username,
+		username: req.session.user,
 		recipient_name: req.body.recipient_name,
 		recipient_email: req.body.recipient_email,
 		reminder_date: req.body.reminder_date,
@@ -124,7 +124,7 @@ exports.addrecipients = function(req, res) {
 		}
 
 		var addRecipient = new Recipient({
-		  username: 'im.kevin@me.com',
+		  username: req.session.user,
 		  recipientName: req.body.recipientName,
 		  recipientEmail: req.body.recipientEmail
 		});
@@ -152,7 +152,7 @@ exports.findrecipients = function(req, res) {
 
 		var Recipient = db.model('Recipient', recipientSchema);
 
-		Recipient.find( function(err, recipient) {
+		Recipient.find({ username : req.session.user }, function(err, recipient) {
 			res.json(recipient);
 			mongoose.connection.close();
 		})
@@ -200,12 +200,15 @@ exports.findreminders = function(req, res) {
 
 		var Reminder = db.model('Reminder', findReminderSchema);
 
-		Reminder.find( function(err, reminder) {
+		Reminder.find({username: req.session.user}, function(err, reminder) {
 			res.json(reminder); //the view for the reminders on the dashboard
+			
+
+			//loops through reminders and will send any unsent ones. Ajaxd from angular
 			for (var i=0; i< reminder.length; i++) {
 				if ((reminder[i].reminder_date == now) && (reminder[i].sent == false)) { // && (reminder[i].sent == 'false')) { //if reminder date and not sent, send. 
 					sendReminder(reminder[i]);
-					var query = { sent: 'false', reminder_date: reminder[i].reminder_date }; //query param for false flag in the db 
+					var query = { username: reminder.username, sent: 'false', reminder_date: reminder[i].reminder_date }; //query param for false flag in the db 
 					Reminder.update(query, { sent: 'true' }, function(err, res) { //updates false flag to true
                     })
 				}
