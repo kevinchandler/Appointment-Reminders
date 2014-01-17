@@ -9,11 +9,10 @@ var dotenv = require('dotenv')
 dotenv.load();
 
 exports.index = function(req, res) {
-	var reminderId = req.params.id
+	var _id = req.params.id
 	,	db = mongoose.createConnection(uristring);
-
 	db.once('open', function(){
-
+	
 	var findReminderSchema = mongoose.Schema({
 		username: String,
 		recipient_email: String,
@@ -26,37 +25,34 @@ exports.index = function(req, res) {
 
 	var Reminder = db.model('Reminder', findReminderSchema);
 
-  Reminder.findOne({'_id' : reminderId}, function(err, reminder){  
-  		if (reminder == null) {
-  			res.redirect('/');
-  		} else {
+	  Reminder.findOne({_id : _id}, function(err, reminder){ 
+	  	// var query = { _id: reminder._id }; //query param for false flag in the db 
   		
-  		var query = {_id: reminder._id }; //query param for false flag in the db 
+  		// if (reminder == null) {
+  		// 	res.redirect('/');
+  		// } 
   		
-  		if (reminder.confirmed == true) {
-			return res.send('you\'ve already confirmed your appointment');	
+  		if (reminder.confirmed == false) {
+       		Reminder.update({ _id: reminder._id }, { confirmed: 'true', cancelled: 'false' }, function(err, res) { //updates false flag to true	        
+        		})
+       		res.render('confirm', { message: 'Thanks you\'ve successfully confirmed your appointment. You can always cancel anytime by clicking the "cancel appointment" link in the email you received'}); //pass in id so we can link to /cancel/ from /confirm/
         } 
-        else {
-        	Reminder.update(query, { confirmed: 'true', cancelled: 'false' }, function(err, res) { //updates false flag to true
+	        else {
+				res.render('confirm', {message: 'You\'ve already confirmed your appointment! You can always cancel anytime by clicking the "cancel appointment" link in the email you received'});
 
-        	})
-        }
-    }
-		mongoose.connection.close();
-		res.send('Thanks, you\'re confirmed!');
-	})
+	    	}
+		})
+   		mongoose.connection.close();
 })
 }
 
 
 
-
 exports.cancel = function(req, res) {
-	var reminderId = req.params.id
+	var _id = req.params.id
 	,	db = mongoose.createConnection(uristring);
-
 	db.once('open', function(){
-
+	
 	var findReminderSchema = mongoose.Schema({
 		username: String,
 		recipient_email: String,
@@ -68,19 +64,24 @@ exports.cancel = function(req, res) {
 	});
 
 	var Reminder = db.model('Reminder', findReminderSchema);
-	
-  Reminder.findOne({'_id' : reminderId}, function(err, reminder){  
-  		if (reminder == null) {
-  			res.redirect('/');
-  		} else {
+
+	  Reminder.findOne({_id : _id}, function(err, reminder){ 
+	  	// var query = { _id: reminder._id }; //query param for false flag in the db 
   		
-  			var query = { _id: reminder._id }; //query param for false flag in the db 
+  		// if (reminder == null) {
+  		// 	res.redirect('/');
+  		// } 
   		
-        	Reminder.update(query, { cancelled: 'true', confirmed: 'false' }, function(err, res) { //updates false flag to true
-        	})
-    }
-		mongoose.connection.close();
-		res.end('You have successfully cancelled your appointment');
-	})
+  		if (reminder.cancelled == false) {
+       		Reminder.update({ _id: reminder._id }, { confirmed: 'false', cancelled: 'true' }, function(err, res) { //updates false flag to true	        
+        		})
+       		res.render('cancel', { message: 'You\'ve successfully cancelled your appointment. You can always confirm anytime by clicking the "confirm appointment" link in the email you received'}); //pass in id so we can link to /cancel/ from /confirm/
+        } 
+	        else {
+				res.render('cancel', {message: 'You\'ve already cancelled your appointment! You can always cancel anytime by clicking the "confirm appointment" link in the email you received'});
+
+	    	}
+		})
+   		mongoose.connection.close();
 })
 }
