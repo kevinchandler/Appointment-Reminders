@@ -111,16 +111,18 @@ exports.createreminder = function(req, res) {
 
 exports.addrecipients = function(req, res) {
 	var Recipient = require('../public/js/addRecipientsSchema.js');
-	mongoose.connect(uristring);
+	
 
 	//validate the email addresses
 	var re = /[^@]+@[^.]+(\.[^.]+)+/
 	
 		var validateEmail = re.exec(req.body.recipientEmail); 
 		if (!validateEmail) {
-			console.log('invalid email!')
+			console.log('invalid email!');
 			return;
 		}
+		else {
+		mongoose.connect(uristring);
 
 		var addRecipient = new Recipient({
 		  username: req.session.user,
@@ -128,12 +130,16 @@ exports.addrecipients = function(req, res) {
 		  recipientEmail: req.body.recipientEmail
 		});
 
-		addRecipient.save(function(err) {
+		addRecipient.save(function(err, recipient) {
 			if(err) console.log(err);
+			else {
+				console.log(recipient);
+			}
 		})
 		//lets you know if there are any invalid email addresses & what they are
 		mongoose.connection.close();
-		res.redirect('#/dashboard/remind');
+		res.redirect('#/');
+		}	
 }
 
 //---------------------------------------//

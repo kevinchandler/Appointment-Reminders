@@ -20,17 +20,9 @@ angular.module('remindApp', [
        .when('/logout', {
           redirectTo: '/'
       })
-       .when('/dashboard', {
-        templateUrl: '../views/dashboard.html',
-        controller: 'DashboardCtrl'
-      })
-      .when('/dashboard/create-template', {
-        templateUrl: '../views/createtemplate.html',
-        controller: 'CreateTemplateCtrl'
-      })
-      .when('/dashboard/add-recipient', {
-        templateUrl: '../views/addrecipient.html',
-        controller: 'CreateTemplateCtrl'
+      .when('/addrecipient', {
+        templateUrl: 'views/addrecipient.html',
+        controller: 'AddRecipientCtrl'
       })
       .otherwise({
         redirectTo: '/'

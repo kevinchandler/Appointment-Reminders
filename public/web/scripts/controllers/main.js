@@ -82,6 +82,5 @@ angular.module('remindApp')
 })
 
 .controller('AddRecipientCtrl', function ($scope) {
-	
-	
+	 
 })

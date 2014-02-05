@@ -20,25 +20,28 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({secret: 'fdsfdsfdsfsfsdkmfkwemkmmmmmmkmkMKMK$KMKMRMMKMKXMKMXKMXKX'}));
 app.use(express.methodOverride());
+app.use(express.static(path.join(__dirname, 'public/web')));
+
 app.use(app.router);
+
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
 
-function authenticate(req, res, next) {
-  if (!req.session || !req.session.user) {
-    if (req.url == '/login') {
-      next();
-    } else {
-      res.redirect('/login');
-      }
-    }
-  else {
-  next();
-  }
-}
+// function authenticate(req, res, next) {
+//   if (!req.session || !req.session.user) {
+//     if (req.url == '/login') {
+//       next();
+//     } else {
+//       res.redirect('/login');
+//       }
+//     }
+//   else {
+//   next();
+//   }
+// }
 
 // app.get('/', authenticate);
 app.get('/views/addrecipient.html', function(req, res) {
@@ -61,6 +64,7 @@ app.get('/api/remind', function(req, res) {
 
 // app.post('/api/re-mind/createtemplate', remind.createtemplate);
 app.post('/api/re-mind/createreminder', remind.createreminder);
+
 app.post('/api/re-mind/addrecipients', remind.addrecipients);
 
 app.get('/login', routes.login);
@@ -83,7 +87,6 @@ app.post('/api/re-mind/sendreminder/:id', remind.sendreminder);
 
 
 
-app.use(express.static(path.join(__dirname, 'public/web')));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
