@@ -3,7 +3,7 @@ var dotenv = require('dotenv')
 , uristring =
   	process.env.MONGOLAB_URI ||
 	process.env.MONGOHQ_URL ||
-	'mongodb://localhost/remindalpha';
+	'mongodb://localhost:27017/remindalpha';
 var moment = require('moment');
 dotenv.load();
 
@@ -18,7 +18,7 @@ dotenv.load();
 		  to: recipient_email,
 		  from: process.env.FROM_EMAIL,
 		  subject: 'Your appointment reminder from ' + process.env.BUSINESS_NAME,
-		  html: 'Hello! Just a friendly reminder about your appointment on: ' + appointment_date + ' at ' + appointment_time + " <br /><br /> <a href='http://localhost:3000" + '/confirm/'+id + "'>Confirm appointment</a> <br /> <a href='http://localhost:3000" + '/cancel/'+id + "'>Cancel appoitment</a> <br /> <br /> If you've already confirmed and something comes up, you can always come back to cancel or confirm your appointment; just click on the relevant link above. <br /> \n <br /> " + process.env.BUSINESS_NAME + "<br />" + process.env.BUSINESS_PHONE + '<br />' + process.env.BUSINESS_ADDRESS + "<br />" + "<br />" + "<p></p><br />"
+		  html: 'Hello! Just a friendly reminder about your appointment on: ' + appointment_date + ' at ' + appointment_time + " <br /><br /> <a href='http://" + process.env.BUSINESS_WEBSITE + '/confirm/'+id + "'>Confirm appointment</a> <br /> <a href='http://" + process.env.BUSINESS_WEBSITE + '/cancel/'+id + "'>Cancel appoitment</a> <br /> <br /> If you've already confirmed and something comes up, you can always come back to cancel or confirm your appointment; just click on the relevant link above. <br /> \n <br /> " + process.env.BUSINESS_NAME + "<br />" + process.env.BUSINESS_PHONE + '<br />' + process.env.BUSINESS_ADDRESS + "<br />" + "<br />" + "<p></p><br />"
 		}, function(success, message) {
 		  if (!success) {
 		  	return 500
@@ -119,7 +119,7 @@ exports.addrecipients = function(req, res) {
 		var validateEmail = re.exec(req.body.recipientEmail); 
 		if (!validateEmail) {
 			console.log('invalid email!');
-			return;
+			res.redirect('/#error');
 		}
 		else {
 		mongoose.connect(uristring);
@@ -209,7 +209,7 @@ exports.findreminders = function(req, res) {
 			res.json(reminder); //the view for the reminders on the dashboard
 			
 
-			//loops through reminders and will send any unsent ones. Ajaxd from angular
+			//loops through reminders and will send any unsent ones. Ajax'd from angular
 			for (var i=0; i< reminder.length; i++) {
 				if ((reminder[i].reminder_date == now) && (reminder[i].sent == false)) { // && (reminder[i].sent == 'false')) { //if reminder date and not sent, send. 
 					sendReminder(reminder[i]);

@@ -31,8 +31,11 @@ exports.index = function(req, res) {
   		// if (reminder == null) {
   		// 	res.redirect('/');
   		// } 
-  		
-  		if (reminder.confirmed == false) {
+  		if (err) throw err;
+  		else if (reminder == null) {
+  			mongoose.connection.close();
+  		}
+  		else if (reminder.confirmed == false) {
        		Reminder.update({ _id: reminder._id }, { confirmed: 'true', cancelled: 'false' }, function(err, res) { //updates false flag to true	        
         		})
        		res.render('confirm', { message: 'Thanks you\'ve successfully confirmed your appointment. You can always cancel anytime by clicking the "cancel appointment" link in the email you received'}); //pass in id so we can link to /cancel/ from /confirm/

@@ -2,4 +2,4 @@ extends layout
 block content
   h2 Appointment confirmation Raincross Dermatology
   p  #{message}
-  a(href='http://raincrossdermatology.com') Raincross Dermatology
+  a(href=process.env.BUSINESS_WEBSITE) process.env.BUSINESS_NAME

@@ -13,7 +13,7 @@
 
 	<div ng-controller='CreateReminderCtrl' class='col-md-4'>
 		<form name='createReminderForm' ng-submit='createReminder()'>
-		    <h3 class='lead'>Create a reminder:</h3> 
+		    <h3 class='lead'>Create:</h3> 
 		     <select ng-model="recipient" name='recipient_email' ng-options="r.recipientEmail group by r.recipientName for r in recipients">
 		       <option value="">-- pick someone --</option>
       		</select>
@@ -27,8 +27,8 @@
 		</form>
 	</div> 
 
-	<div ng-controller='ReminderCtrl' class='col-md-7 col-md-offset-1'>
-		<h3 class='lead'>Upcoming Appointments:</h3>
+	<div ng-controller='FindReminderCtrl' class='col-md-7 col-md-offset-1'>
+		<h3 class='lead'>Upcoming:</h3>
 		<input type='hidden' ng-model='today'>
 		<ul class='upcomingReminders'>
 			<li ng-repeat='reminder in reminders'>

@@ -10,7 +10,7 @@ angular.module('remindApp')
 })
 
  .controller('CreateReminderCtrl', function ($scope, $http) {
- 	$http({method: 'GET', url: 'http://localhost:3000/api/re-mind/findrecipients'}).
+ 	$http({method: 'GET', url: 'http://localhost:3000/api/findrecipients'}).
   		success(function(data, status, headers, config) {
   			$scope.recipients = data; //repeats over reach recipient in the view
   		});
@@ -23,7 +23,7 @@ angular.module('remindApp')
     formatDate();
 
     $http({
-    url: 'http://localhost:3000/api/re-mind/createreminder',
+    url: 'http://localhost:3000/api/createreminder',
     method: "POST",
     data: { 
       'recipient_name' : $scope.recipient.recipientName,
@@ -42,10 +42,10 @@ angular.module('remindApp')
 }
 })
 
-.controller('ReminderCtrl', function ($scope, $http)  {
+.controller('FindReminderCtrl', function ($scope, $http)  {
     function findReminders(){ //reload reminders
     $http({
-      url: 'http://localhost:3000/api/re-mind/findreminders',
+      url: 'http://localhost:3000/api/findreminders',
       method: 'GET'}).
         success(function(reminders, status) {
           $scope.reminders = reminders;
@@ -55,7 +55,7 @@ angular.module('remindApp')
 
     $scope.sendReminder = function() {
       $http({
-        url: 'http://localhost:3000/api/re-mind/sendreminder/' + this.reminder._id,
+        url: 'http://localhost:3000/api/sendreminder/' + this.reminder._id,
         method: 'POST',
         data: { 
         'reminder' : this.reminder
@@ -68,7 +68,7 @@ angular.module('remindApp')
 
     $scope.deleteReminder = function() {
       $http({
-      url: 'http://localhost:3000/api/re-mind/deletereminder/' + this.reminder._id,
+      url: 'http://localhost:3000/api/deletereminder/' + this.reminder._id,
       method: 'DELETE'}).
         success(function(reminders, status) {
           findReminders();
