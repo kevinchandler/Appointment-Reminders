@@ -44,9 +44,9 @@ if ('development' == app.get('env')) {
 // }
 
 // app.get('/', authenticate);
-app.get('/views/addrecipient.html', function(req, res) {
-  res.redirect('/#/views/addrecipient.html');
-})
+// app.get('/views/addrecipient.html', function(req, res) {
+//   res.redirect('/#/views/addrecipient.html');
+// })
 
 app.post('/login/success', function(req, res) {
   req.session.user = req.body.email;
