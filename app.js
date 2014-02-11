@@ -65,7 +65,7 @@ app.get('/api/remind', function(req, res) {
 // app.post('/api/createtemplate', remind.createtemplate);
 app.post('/api/createreminder', remind.createreminder);
 
-app.post('/api/addrecipients', remind.addrecipients);
+app.post('/api/addrecipient', remind.addrecipients);
 
 app.get('/login', routes.login);
 
