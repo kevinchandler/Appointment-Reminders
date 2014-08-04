@@ -1,5 +1,3 @@
 node_modules/
-code_might_need_later
-Procfile
 .env
 .DS_Store
