@@ -1,10 +1,9 @@
 <div ng-controller='DashboardCtrl'>
 <div class="header">
   <ul class="nav nav-pills pull-right">
-    <li class="active"><a ng-href="https://apptrmdr.herokuapp.com/#/">Dashboard</a></li>
-    <!-- <li><a ng-href="#/dashboard/create-template">Create Template</a></li> -->
-    <li><a ng-href="https://apptrmdr.herokuapp.com/#/addrecipient">Add Recipients</a></li>
-    <li><a ng-href="/logout">Log Out</a></li>
+    <li class="active"><a ng-href="/#">Dashboard</a></li>
+    <li><a ng-href="/#/addrecipient">Add Recipients</a></li>
+    <li><a ng-href="/#/logout">Log Out</a></li>
   </ul>
   <h3 class="text-muted">Remind</h3>
 </div>
@@ -13,19 +12,19 @@
 
 	<div ng-controller='CreateReminderCtrl' class='col-md-4'>
 		<form name='createReminderForm' ng-submit='createReminder()'>
-		    <h3 class='lead'>Create:</h3> 
+		    <h3 class='lead'>Create:</h3>
 		     <select ng-model="recipient" name='recipient_email' ng-options="r.recipientEmail group by r.recipientName for r in recipients">
 		       <option value="">-- pick someone --</option>
       		</select>
       		<br />
       		<input ui-date ng-model='appointment_date' name='appointment_date' placeholder='Appointment date' /> <br />
-      		
+
       		<input type='text' ng-model='appointment_time'name='appointment_time' placeholder='Appointment time' /><br />
 
 		    <input ui-date ng-model='reminder_date' name='reminder_date' placeholder='Date to start reminding' /> <br />
 		    <button type='submit' class="btn btn-md btn-success">Re-mind</button>
 		</form>
-	</div> 
+	</div>
 
 	<div ng-controller='FindReminderCtrl' class='col-md-7 col-md-offset-1'>
 		<h3 class='lead'>Upcoming:</h3>

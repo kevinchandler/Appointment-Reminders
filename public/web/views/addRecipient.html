@@ -1,7 +1,7 @@
 <div ng-controller='DashboardCtrl'>
 <div class="header">
   <ul class="nav nav-pills pull-right">
-    <li><a ng-href="https://apptrmdr.herokuapp.com/#/">Dashboard</a></li>
+    <li><a ng-href="#/">Dashboard</a></li>
     <!-- <li><a ng-href="#/dashboard/create-template">Create Template</a></li> -->
     <li class="active"><a ng-href="https://apptrmdr.herokuapp.com/#/addrecipient">Add Recipients</a></li>
     <li><a ng-href="/logout">Log Out</a></li>
@@ -14,9 +14,9 @@
 <div ng-controller='AddRecipientCtrl'>
  <form action='/api/addrecipient' method='post' class='col-md-12'>
     <h3 class='lead'>Add someone:</h3>
-    
+
     <input type='text' name='recipientName' placeholder='Name' required /> <br />
-    
+
     <input type='text' name='recipientEmail' placeholder='Email addresses' required /> <br />
 
     <input type='text' name='Phone' placeholder='Phone number' required /> <br />

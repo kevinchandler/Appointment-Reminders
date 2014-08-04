@@ -62,20 +62,14 @@ app.get('/api/remind', function(req, res) {
   res.redirect('#/')
 });
 
-// app.post('/api/createtemplate', remind.createtemplate);
 app.post('/api/createreminder', remind.createreminder);
 
 app.post('/api/addrecipient', remind.addrecipients);
 
 app.get('/login', routes.login);
 
-
-// app.get('/api/sendreminder:id', remind.sendreminder);
-
 app.get('/confirm/:id', confirm.index);
 app.get('/cancel/:id', confirm.cancel);
-
-// app.get('/api/findtemplate', remind.findtemplate);
 
 app.get('/api/findrecipients', remind.findrecipients);
 
@@ -83,7 +77,7 @@ app.get('/api/findreminders', remind.findreminders);
 
 app.delete('/api/deletereminder/:id', remind.deletereminder);
 
-app.post('/api/sendreminder/:id', remind.sendreminder); 
+app.post('/api/sendreminder/:id', remind.sendreminder);
 
 
 
